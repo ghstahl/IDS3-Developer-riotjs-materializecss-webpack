@@ -1,5 +1,5 @@
 import RiotControl from 'riotcontrol';
-import 'riot-weui'
+
 <aspnet-roles>
 
 
