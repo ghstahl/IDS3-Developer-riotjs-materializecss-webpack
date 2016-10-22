@@ -195,9 +195,7 @@ import '../components/simple-table.tag'
 </style>
     <script>
         var self = this;
-
-        self.mixin("riot-lifecycle-mixin");
-
+        self.mixin("riotcontrol-registration-mixin");
 
         self.scopes = null;
         self.scopesT = [[]];
@@ -393,25 +391,21 @@ import '../components/simple-table.tag'
             $(".collapsible").collapsible({accordion: true});
             $(".collapsible").collapsible({accordion: false});
         }
-        self.mixin("riotcontrol-registration-mixin");
-        self.registerEventHandler('developer-scopes-get-result',self.onDeveloperScopesResult);
-        self.registerEventHandler('developer-clients-page-result',self.onDeveloperClientsPageResult);
-        var myMixIn = {
-            init: function () {
-                self.registerLifeCycleHandler('mount',function() {
-                    self.result = null;
-                    var q = riot.route.query();
-                    console.log('on mount: identityserver-developer-detail',q);
-                    RiotControl.trigger('developer-scopes-get');
-                    RiotControl.trigger('developer-clients-page',{Page:9,PagingState:null});
-                    $('.collapsible').collapsible({
-                        accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-                    });
-                    $('select').material_select();
-                })
-            }
-        }
-        self.mixin(myMixIn);
+
+        self.riotControlRegisterEventHandler('developer-scopes-get-result',self.onDeveloperScopesResult);
+        self.riotControlRegisterEventHandler('developer-clients-page-result',self.onDeveloperClientsPageResult);
+
+        self.on('mount',function() {
+            self.result = null;
+            var q = riot.route.query();
+            console.log('on mount: identityserver-developer-detail',q);
+            RiotControl.trigger('developer-scopes-get');
+            RiotControl.trigger('developer-clients-page',{Page:9,PagingState:null});
+            $('.collapsible').collapsible({
+                accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+            });
+            $('select').material_select();
+        })
     </script>
 </identityserver-developer-detail>
 

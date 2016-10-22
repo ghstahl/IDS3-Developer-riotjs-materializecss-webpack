@@ -18,7 +18,6 @@
 
     <script>
         var self = this;
-        self.mixin("riot-lifecycle-mixin");
         self.mixin("opts-mixin");
     </script>
 </simple-table>
