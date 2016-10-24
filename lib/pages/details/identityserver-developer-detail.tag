@@ -1,5 +1,9 @@
 import RiotControl from 'riotcontrol';
+import Sortable from '../../js/Sortable.min.js';
 import '../components/simple-table.tag'
+import './create-client.tag'
+import '../components/consolidated-form-test.tag'
+
 
 <identityserver-developer-detail>
 
@@ -13,43 +17,9 @@ import '../components/simple-table.tag'
                 <ul class="collapsible" data-collapsible="accordion">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">add</i>Create New Client...</div>
-                        <div class="collapsible-body">
+                        <div class="container collapsible-body">
                             <div class="container">
-                                <div class="row">
-                                    <form class="col s12" >
-                                        <div class="row">
-                                            <div class="input-field col s6">
-                                                <i class="material-icons prefix">account_circle</i>
-                                                <input
-                                                        type="text" class="validate"
-                                                        oninput = { onRChange }
-                                                        onchange = { onRChange }
-                                                        onkeypress = { onKeyPress }
-                                                        name='r' >
-                                                <label >Friendly Client Name</label>
-                                            </div>
-                                            <div class="input-field col s6" id="flowPickerContainer">
-                                                <i class="material-icons prefix">timeline</i>
-                                                <select id="selectFlow">
-                                                    <option  value="-1" disabled selected>Add New Flow...</option>
-                                                    <option  each="{availableFlows}" value="{Name}"
-                                                             onChange={this.onSelectChanged}
-                                                             data-message={Name}>{Name}</option>
-                                                </select>
-                                                <label>Flow Type</label>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="section">
-                                    <a onclick={ onCreateClient }
-                                       data-message={Name}
-                                       class="waves-effect waves-light btn">Remove</a>
-
-                                </div>
+                                <consolidated-form-test name="cft"></consolidated-form-test>
                             </div>
                         </div>
                     </li>
@@ -178,6 +148,19 @@ import '../components/simple-table.tag'
     </div>
 
     <style scoped>
+        .sortable-ghost {
+            opacity: .3;
+            background: #f60;
+        }
+        .my-handle {
+            cursor: move;
+            cursor: -webkit-grabbing;
+        }
+        .ignore-elements{}
+        #assignedScopeDragTarget  {
+            min-height: 150px
+        }
+
         .collapsible li.disabled .collapsible-header:hover {
             cursor: default;
         }
@@ -192,14 +175,18 @@ import '../components/simple-table.tag'
             min-width: 200px; /* Changed this to accomodate content width */
 
         }
+
 </style>
     <script>
-        var self = this;
+        var self = this
+        self.mixin("shared-observable-mixin");
         self.mixin("riotcontrol-registration-mixin");
 
         self.scopes = null;
         self.scopesT = [[]];
         self.scopeCols = ['a'];
+        self._itemsGrantedScopes = [];
+        self._itemsAssignedScopes = []
 
         self.userScopes = null;
         self.hasUserScopes = false;
@@ -217,6 +204,23 @@ import '../components/simple-table.tag'
         self.hasRoles = false;
         self.isUserEnrolledInIdentityServer = false;
 
+        self.emptyUL2 = (ul) => {
+
+            var lis = ul.getElementsByTagName("li");
+            for(var i = lis.length; i--;){
+                if(lis[i].attributes["do-not-remove"]  == undefined){
+                    ul.removeChild(lis[i]);
+                }
+            }
+        }
+        self.onRemoveScopeItem = (e) =>{
+            console.log('onRemoveScopeItem',e.item.name)
+            var result = self._itemsAssignedScopes.filter(function( item ) {
+                return item.name != e.item.name;
+            });
+            self._itemsAssignedScopes = result;
+            self.update()
+        }
         self.onUserScopeResult = (result) => {
             console.log('onUserScopeResult',result)
             self.userScopes = result;
@@ -241,6 +245,10 @@ import '../components/simple-table.tag'
             self.scopesT =  self.scopes.map(function(item) {
                 return [item];
             });
+            self._itemsGrantedScopes =  self.scopes.map(function(item) {
+                return {name:item};
+            });
+
             self.scopeCols = []
             console.log('onDeveloperScopesResult ','self.scopesT:',self.scopesT)
             self.update();
@@ -395,7 +403,13 @@ import '../components/simple-table.tag'
         self.riotControlRegisterEventHandler('developer-scopes-get-result',self.onDeveloperScopesResult);
         self.riotControlRegisterEventHandler('developer-clients-page-result',self.onDeveloperClientsPageResult);
 
+        self.on('before-mount', function() {
+            self.initCFTState()
+        })
         self.on('mount',function() {
+            self.initCFTState()
+            self.triggerEvent('cft-state-init',[self.cftState]);
+
             self.result = null;
             var q = riot.route.query();
             console.log('on mount: identityserver-developer-detail',q);
@@ -406,6 +420,25 @@ import '../components/simple-table.tag'
             });
             $('select').material_select();
         })
+        self.initCFTState = () => {
+            var cftState = {
+                friendlyName:"Some Friendly Name",
+                scopes:[]
+            }
+            self.cftState = cftState;
+        }
+        self.cftState = {
+            friendlyName:"Some Friendly Name",
+            scopes:[]
+        }
+        self.onCFTSubmit = (state) =>{
+            console.log('onCFTSubmit',state)
+            self.initCFTState()
+            self.triggerEvent('cft-state-init',[self.cftState]);
+        }
+        self.registerObserverableEventHandler(
+                'cft-submit',
+                self.onCFTSubmit)
     </script>
 </identityserver-developer-detail>
 

@@ -2,40 +2,50 @@
 import Sortable from '../js/Sortable.min.js';
 
 <drag-drop2>
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <ul class="collection" id="roleA">
+                    <li each={_itemsRoleA} data-role="{name}" class="collection-item">
+                        {name}
+                    </li>
+                </ul>
+                <ul class="collection" id="roleB">
+                    <li each={_itemsRoleB} data-role="{name}" class="collection-item">
+                        {name}
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <ul class="collection" id="roleFinal">
+                    <li each={_itemsRoleFinal} class="collection-item avatar">
+                        <div class="row">
+                            <img src="images/graduation.png" alt="" class="circle">
+                            <span class="title">{name}</span>
+                            <p>First Line <br>
+                                Second Line
+                            </p>
+                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                            <div class="section">
+                                <h5>Section 1</h5>
+                                <p>Stuff</p>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="section">
+                                <h5>Section 2</h5>
+                                <p>Stuff</p>
+                            </div>
+                        </div>
 
-        <ul class="collection" id="roleA">
-            <li each={_itemsRoleA} data-role="{name}" class="collection-item">
-                 {name}
-            </li>
-        </ul>
-        <ul class="collection" id="roleB">
-            <li each={_itemsRoleB} data-role="{name}" class="collection-item">
-                {name}
-            </li>
-        </ul>
-        <ul class="collection" id="roleFinal">
-            <li each={_itemsRoleFinal} class="collection-item avatar">
-                <div class="row">
-                    <img src="images/graduation.png" alt="" class="circle">
-                    <span class="title">{name}</span>
-                    <p>First Line <br>
-                        Second Line
-                    </p>
-                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                    <div class="section">
-                        <h5>Section 1</h5>
-                        <p>Stuff</p>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="section">
-                        <h5>Section 2</h5>
-                        <p>Stuff</p>
-                    </div>
-                </div>
+                    </li>
 
-            </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-        </ul>
+
+
 
         <button class="btn waves-effect waves-light" onclick="{updateRoles}"  >Submit</button>
 

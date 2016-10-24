@@ -4366,6 +4366,7 @@ i {
     margin-bottom: 0;
   }
 }
+
 @media only screen and(min-width: 601px) {
   .hide-on-med-and-up {
     display: none !important;
@@ -4374,7 +4375,7 @@ i {
     display: block !important;
   }
   .container {
-    width: 85%;
+    width: 70%;
   }
   nav {
     height: 64px;
@@ -4595,7 +4596,7 @@ i {
   }
   .container {
 
-    width: 85%;
+    width: 70%;
   }
   #toast-container {
     top: 10%;
