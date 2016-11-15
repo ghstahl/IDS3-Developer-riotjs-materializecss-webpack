@@ -1,34 +1,16 @@
 import RiotControl from 'riotcontrol';
 
 <aspnet-roles>
-
-
-
     <ul class="collapsible collection with-header">
         <li class="collection-header"><h4>AspNet Roles</h4></li>
         <li each="{roles }">
             <div class="collapsible-header"><i class="material-icons">mode_edit</i>{ Name }</div>
             <div class="collapsible-body">
-                <div class="container">
-                    <div class="section">
-                        <h5>Section 1</h5>
-                        <p>Stuff</p>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="section">
-                        <h5>Section 2</h5>
-                        <p>Stuff</p>
-                    </div>
-                    <div class="section">
-                        <a onclick={ onRemoveRole }
-                           data-message={Name}
-                           class="waves-effect waves-light red btn">Remove</a>
-                        <a onclick={ onRemoveRole }
-                           data-message={Name}
-                           class="waves-effect waves-light red btn">Remove</a>
-                    </div>
-                </div>
-
+                <p>
+                    <a onclick={ onRemoveRole }
+                       data-message={Name}
+                       class="waves-effect waves-light red btn">Remove</a>
+                </p>
             </div>
         </li>
 
@@ -44,7 +26,6 @@ import RiotControl from 'riotcontrol';
                        disabled={ !isRoleAddable }
                        onclick={onAddRole}
                        class="btn-floating btn-medium waves-effect waves-light "><i class="material-icons">add</i></a>
-
                 </div>
                 <div class="input-field col s10">
                     <input
@@ -68,8 +49,6 @@ import RiotControl from 'riotcontrol';
         self.roles = ["Should","Never","See","This"]
         self.isRoleAddable = false;
         self.lastRole = null;
-
-
 
 
         self.onRolesChanged =  function(roles) {

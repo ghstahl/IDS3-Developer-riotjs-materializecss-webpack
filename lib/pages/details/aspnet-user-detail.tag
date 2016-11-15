@@ -144,6 +144,7 @@ import RiotControl from 'riotcontrol';
         min-width: 200px; /* Changed this to accomodate content width */
 
     }
+
 </style>
     <script>
         var self = this;

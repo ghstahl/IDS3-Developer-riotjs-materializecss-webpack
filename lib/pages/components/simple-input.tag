@@ -22,7 +22,6 @@
         var self = this;
         self.mixin("opts-mixin");
         self.mixin("shared-observable-mixin");
-
         self.showBadge = true;
         self.lengthCounter = opts.minLength;
         self._isValid = false;

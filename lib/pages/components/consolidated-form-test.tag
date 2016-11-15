@@ -5,18 +5,14 @@ import './simple-select.tag'
 <consolidated-form-test>
 
     <form>
-        <div class="card2">
+        <div class="card">
             <div class="card-content">
-                <h5>My Consolidated Form</h5>
+                <span class="card-title">My Consolidated Form</span>
                 <div class="row">
                     <div class="input-field col s6">
-                        <simple-input
-                                name="friendly-name"
-                                state={friendlyNameState}
-                                min-length=4
-                                label="Friendly Client Name"
-                        ></simple-input>
+
                     </div>
+
                     <div class="input-field col s6">
                         <simple-select
                                 name="flow-type"
@@ -36,30 +32,11 @@ import './simple-select.tag'
                 >
                     Sumbit
                 </a>
-
             </div>
         </div>
     </form>
 
-
-    <style scoped>
-        .card2 {
-            position: relative;
-            margin: 0.5rem 0 1rem 0;
-            transition: box-shadow .25s;
-            border-radius: 0px;
-        }
-        .card2 .card-action {
-            position: relative;
-            background-color: inherit;
-            border-top: 1px solid rgba(160, 160, 160, 0.2);
-            padding: 20px;
-        }
-        .card2 .card-content {
-            padding: 20px;
-            border-radius: 0 0 2px 2px;
-        }
-    </style>
+    <style></style>
     <script>
 
         var self = this;

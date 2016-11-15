@@ -1,54 +1,66 @@
-
 import Sortable from '../js/Sortable.min.js';
+import './components/simple-table.tag';
+import './components/consolidated-form-test.tag'
 
 <drag-drop2>
-    <div class="section">
-        <div class="container">
-            <div class="row">
-                <ul class="collection" id="roleA">
-                    <li each={_itemsRoleA} data-role="{name}" class="collection-item">
-                        {name}
-                    </li>
-                </ul>
-                <ul class="collection" id="roleB">
-                    <li each={_itemsRoleB} data-role="{name}" class="collection-item">
-                        {name}
-                    </li>
-                </ul>
-            </div>
-            <div class="row">
+    <simple-table title={stTitle}
+                  cols={stCols}
+                  rows={stRows}></simple-table>
+    <div class="secion">
+        <div class="row">
+            <form class="col s12" >
+                <div class="row">
+                    <div class="input-field col s6">
+                        <ul class="collection" id="roleA">
+                            <li each={_itemsRoleA} data-role="{name}" class="collection-item">
+                                {name}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="input-field col s6">
+                        <ul class="collection" id="roleB">
+                            <li each={_itemsRoleB} data-role="{name}" class="collection-item">
+                                {name}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <form class="col s12" >
                 <ul class="collection" id="roleFinal">
-                    <li each={_itemsRoleFinal} class="collection-item avatar">
-                        <div class="row">
-                            <img src="images/graduation.png" alt="" class="circle">
-                            <span class="title">{name}</span>
-                            <p>First Line <br>
-                                Second Line
-                            </p>
-                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                            <div class="section">
-                                <h5>Section 1</h5>
-                                <p>Stuff</p>
-                            </div>
-                            <div class="divider"></div>
-                            <div class="section">
-                                <h5>Section 2</h5>
-                                <p>Stuff</p>
-                            </div>
-                        </div>
-
+                    <li>
+                        <p>Drag stuff to....
+                            Here!
+                        </p>
                     </li>
+                    <li each={_itemsRoleFinal} class="collection-item avatar">
 
+                        <img src="images/graduation.png" alt="" class="circle">
+                        <span class="title">{name}</span>
+                        <p>First Line <br>
+                            Second Line
+                        </p>
+
+                        <a onclick={onRemoveItem}
+                           class="waves-effect secondary-content waves-light ">
+                            <i class="material-icons">remove</i>
+                            Remove</a>
+                    </li>
                 </ul>
-            </div>
+            </form>
         </div>
     </div>
 
+    <consolidated-form-test name="cft"></consolidated-form-test>
+
+    <button class="btn waves-effect waves-light" onclick="{updateRoles}"  >Submit</button>
 
 
-
-        <button class="btn waves-effect waves-light" onclick="{updateRoles}"  >Submit</button>
-
+    <!-- Modal Structure -->
+    <!-- Modal Trigger -->
+    <a class="waves-effect waves-light btn modal-trigger" onclick={onEULA}>EULA</a>
 
     <!-- Modal Structure -->
     <div id="modal1" class="modal">
@@ -57,41 +69,54 @@ import Sortable from '../js/Sortable.min.js';
             <p>A bunch of text</p>
         </div>
         <div class="modal-footer">
-            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+            <a class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+            <a onclick={onAgree} class=" modal-action waves-effect waves-green btn-flat">Agree</a>
         </div>
     </div>
-    <a href="#modal1" data-toggle="modal" class=" modal-trigger waves-effect waves-light blue accent-2 white-text btn">Add Comment</a>
-    <!-- Modal Trigger -->
-    <button data-target="modal1" class="btn waves-effect waves-light modal-trigger">Modal</button>
-    <style >
+
+    <style scoped>
+        .sortable-ghost {
+            opacity: .3;
+            background: #f60;
+        }
+        #roleA,#roleB,#roleFinal {
+            border: 2px dashed #f60;
+            min-height: 100px
+        }
+    </style>
 
 
-
-    .sortable-ghost {
-        opacity: .3;
-        background: #f60;
-    }
-
-
-    #roleA,#roleB,#roleFinal {
-        border: 2px dashed #f60;
-        min-height: 100px
-    }
-
-</style>
     <script>
         var self = this
+        self.mixin("shared-observable-mixin");
+
+        self.hasAssignedScopes = false
+        self.stCols = ["hi"]
+        self.stTitle ="My Title"
+
+        self.cftState = {
+            friendlyName:"Some Friendly Name",
+            scopes:[]
+        }
 
         self.updateRoles = () =>{
-
             console.log(self.roleFinal)
         }
 
         self.inPlayItem = null;
 
+        self._itemsGrantedScopes = [
+            { name: 'offline_access' },
+            { name: 'api1' },
+            { name: 'geo_location' }
+        ]
+
+
+        self._itemsAssignedScopes = [
+        ]
         self._itemsRoleA = [
             { name: 'Administrator' },
-            { name: 'Developer' },
+            { name: 'Developer',herb:'dig' },
             { name: 'User' }
         ]
         self._itemsRoleB = [
@@ -102,18 +127,52 @@ import Sortable from '../js/Sortable.min.js';
         self._itemsRoleFinal = [
             { name: 'Administrator' }
         ]
+        self.stRows =  self._itemsRoleFinal.map(function(item) {
+            return ['scope',item.name];
+        });
+
+        self.initCFTState = () => {
+            var cftState = {
+                friendlyName:"Some Friendly Name",
+                scopes:[]
+            }
+            self.cftState = cftState;
+        }
 
         self.emptyUL = (ul) => {
-
             var lis = ul.getElementsByTagName("li");
             while(lis.length> 0){
                 ul.removeChild(lis[0]);
                 lis = ul.getElementsByTagName("li");
             }
         }
+
+        self.onRemoveItem = (e) =>{
+
+            console.log('onRemoveRole',e,e.item)
+            var result = self._itemsRoleFinal.filter(function( item ) {
+                return item.name != e.item.name;
+            });
+            self._itemsRoleFinal = result;
+            self.stRows =  self._itemsRoleFinal.map(function(item) {
+                return ['scope',item.name];
+            });
+            self.update()
+        }
+
+        self.onCFTSubmit = (state) =>{
+            console.log('onCFTSubmit',state)
+            self.initCFTState()
+            self.triggerEvent('cft-state-init',[self.cftState]);
+        }
+
+        self.on('before-mount', function() {
+            self.initCFTState()
+        })
+
         self.on('mount', function() {
-            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-            $('.modal-trigger').leanModal();
+            self.initCFTState()
+            self.triggerEvent('cft-state-init',[self.cftState]);
 
             Sortable.create(self.roleA, {
                 group: {
@@ -139,6 +198,7 @@ import Sortable from '../js/Sortable.min.js';
                     self.inPlayItem = newItem;
                 }
             });
+
             Sortable.create(self.roleFinal, {
                 group: {
                     name: 'roles',
@@ -163,9 +223,31 @@ import Sortable from '../js/Sortable.min.js';
                     self._itemsRoleFinal = [];
                     self.update();
                     self._itemsRoleFinal = temp;
+
+
+                    self.stRows =  self._itemsRoleFinal.map(function(item) {
+                        return ['scope',item.name];
+                    });
                     self.update();
                 }
             });
+            self.update();
         })
+        self.onEULA = () =>{
+            console.log('onEULA')
+            $("#modal1").openModal({
+                dismissible: false
+            })
+        }
+
+        self.onAgree = () =>{
+            console.log('onAgree');
+            $("#modal1").closeModal()
+        }
+        self.registerObserverableEventHandler(
+                'cft-submit',
+                self.onCFTSubmit)
     </script>
+
 </drag-drop2>
+
