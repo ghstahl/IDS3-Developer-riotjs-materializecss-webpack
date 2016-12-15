@@ -11,14 +11,14 @@ import './components/consolidated-form-test.tag'
             <form class="col s12" >
                 <div class="row">
                     <div class="input-field col s6">
-                        <ul class="collection" id="roleA">
+                        <ul class="collection" ref="roleA">
                             <li each={_itemsRoleA} data-role="{name}" class="collection-item">
                                 {name}
                             </li>
                         </ul>
                     </div>
                     <div class="input-field col s6">
-                        <ul class="collection" id="roleB">
+                        <ul class="collection" ref="roleB">
                             <li each={_itemsRoleB} data-role="{name}" class="collection-item">
                                 {name}
                             </li>
@@ -29,7 +29,7 @@ import './components/consolidated-form-test.tag'
         </div>
         <div class="row">
             <form class="col s12" >
-                <ul class="collection" id="roleFinal">
+                <ul class="collection" ref="roleFinal">
                     <li>
                         <p>Drag stuff to....
                             Here!
@@ -70,7 +70,7 @@ import './components/consolidated-form-test.tag'
         </div>
         <div class="modal-footer">
             <a class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-            <a onclick={onAgree} class=" modal-action waves-effect waves-green btn-flat">Agree</a>
+            <a onclick={onAgree} class="modal-action waves-effect waves-green btn-flat">Agree</a>
         </div>
     </div>
 
@@ -84,7 +84,6 @@ import './components/consolidated-form-test.tag'
             min-height: 100px
         }
     </style>
-
 
     <script>
         var self = this
@@ -100,7 +99,7 @@ import './components/consolidated-form-test.tag'
         }
 
         self.updateRoles = () =>{
-            console.log(self.roleFinal)
+            console.log(self.refs.roleFinal)
         }
 
         self.inPlayItem = null;
@@ -174,7 +173,7 @@ import './components/consolidated-form-test.tag'
             self.initCFTState()
             self.triggerEvent('cft-state-init',[self.cftState]);
 
-            Sortable.create(self.roleA, {
+            Sortable.create(self.refs.roleA, {
                 group: {
                     name: 'roles',
                     pull: 'clone',
@@ -186,7 +185,7 @@ import './components/consolidated-form-test.tag'
                     self.inPlayItem = newItem;
                 }
             });
-            Sortable.create(self.roleB, {
+            Sortable.create(self.refs.roleB, {
                 group: {
                     name: 'roles',
                     pull: 'clone',
@@ -199,7 +198,7 @@ import './components/consolidated-form-test.tag'
                 }
             });
 
-            Sortable.create(self.roleFinal, {
+            Sortable.create(self.refs.roleFinal, {
                 group: {
                     name: 'roles',
                     pull: false
@@ -218,7 +217,8 @@ import './components/consolidated-form-test.tag'
                     else {
                         self._itemsRoleFinal.push(self.inPlayItem);
                     }
-                    self.emptyUL(self.roleFinal);
+
+                    self.emptyUL(self.refs.roleFinal);
                     var temp = self._itemsRoleFinal;
                     self._itemsRoleFinal = [];
                     self.update();

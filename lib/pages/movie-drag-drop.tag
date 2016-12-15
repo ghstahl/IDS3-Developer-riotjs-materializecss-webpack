@@ -21,12 +21,12 @@ import Sortable from '../js/Sortable.min.js';
             <!-- Textfield with Floating Label -->
             </label>
         </form>
-        <ul class="collection" id="moviecollection">
+        <ul class="collection" ref="moviecollection">
             <li each={results} data-imdb="{imdbID}" class="collection-item">
                  {Title}
             </li>
         </ul>
-        <ul class="collection" id="movieDetail">
+        <ul class="collection" ref="movieDetail">
             <li class="collection-item">
                 Drag a movie here...
             </li>
@@ -114,7 +114,7 @@ import Sortable from '../js/Sortable.min.js';
         self.on('mount', function() {
             var self = this;
 
-            Sortable.create(self.moviecollection, {
+            Sortable.create(self.refs.moviecollection, {
                 group: {
                     name: 'movies',
                     pull: 'clone',
@@ -126,7 +126,7 @@ import Sortable from '../js/Sortable.min.js';
                     self.inPlayItem = newItem;
                 }
             });
-            Sortable.create(self.movieDetail, {
+            Sortable.create(self.refs.movieDetail, {
                 group: {
                     name: 'movies',
                     pull: false
@@ -137,7 +137,7 @@ import Sortable from '../js/Sortable.min.js';
                     var imdbID = el.getAttribute("data-imdb");
                     console.log(imdbID);
                     RiotControl.trigger('movie_fetch_detail', { imdbID: imdbID });
-                    self.emptyUL(self.movieDetail);
+                    self.emptyUL(self.refs.movieDetail);
                     self.movieDetails = [];
                     self.update();
                 }

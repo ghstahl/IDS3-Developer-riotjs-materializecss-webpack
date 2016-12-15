@@ -3,14 +3,14 @@ import Sortable from '../js/Sortable.min.js';
 <drag-drop>
     <form onsubmit={ updateRoles }>
 
-        <ul class="collection" id="roleA">
+        <ul class="collection" ref="roleA">
 
             <li each={_itemsRoleA} data-role="{name}" class="collection-item">
                 <div>{name}<i class="material-icons">send</i></div>
             </li>
         </ul>
 
-        <ul id="roleB">
+        <ul ref="roleB">
             <li each={_itemsRoleB} data-role="{name}">{name}</li>
         </ul>
 
@@ -54,7 +54,7 @@ import Sortable from '../js/Sortable.min.js';
 
         self.on('mount', function() {
 
-            Sortable.create(self.roleA, {
+            Sortable.create(self.refs.roleA, {
                 group: {
                     name: 'roles'
                 },
@@ -65,7 +65,7 @@ import Sortable from '../js/Sortable.min.js';
             });
 
 
-            Sortable.create(self.roleB, {
+            Sortable.create(self.refs.roleB, {
                 group: {
                     name: 'roles'
                 },

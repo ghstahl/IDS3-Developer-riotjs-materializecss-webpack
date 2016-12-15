@@ -4,7 +4,7 @@ import Sortable from '../../js/Sortable.min.js';
 
     <div class="row">
         <div class="input-field col s6">
-            <ul class="collection with-header" id="dragTarget">
+            <ul class="collection with-header" ref="dragTarget">
                 <div class="collection-header">
                     <h4>{state.dragTarget.title}</h4>
                     <span>{state.dragTarget.titleSecondary}</span>
@@ -24,7 +24,7 @@ import Sortable from '../../js/Sortable.min.js';
         </div>
 
         <div class="input-field col s6">
-            <ul class="collection with-header" id="dragSource">
+            <ul class="collection with-header" ref="dragSource">
                 <div class="collection-header">
                     <h4>{state.dragSource.title}</h4>
                     <span>{state.dragSource.titleSecondary}</span>
@@ -82,7 +82,16 @@ import Sortable from '../../js/Sortable.min.js';
         self.mixin("opts-mixin");
         self.mixin("shared-observable-mixin");
 
-        self.state = {}
+        self.state = {
+            dragTarget: {
+                titleSecondary: "",
+                title: ""
+            },
+            dragSource: {
+                titleSecondary: "",
+                title: ""
+            }
+        }
 
         self.emptyUL2 = (ul) => {
             var lis = ul.getElementsByTagName("li");
@@ -112,7 +121,7 @@ import Sortable from '../../js/Sortable.min.js';
         this.on('mount', function() {
             console.log('dd-form-card',opts)
 
-            Sortable.create(self.dragSource, {
+            Sortable.create(self.refs.dragSource, {
                 handle: ".my-handle",
                 filter: ".ignore-elements",
                 group: {
@@ -123,7 +132,7 @@ import Sortable from '../../js/Sortable.min.js';
                 sort:false
             });
 
-            Sortable.create(self.dragTarget, {
+            Sortable.create(self.refs.dragTarget, {
                 filter: ".ignore-elements",
                 group: {
                     name: 'scopes',
@@ -143,7 +152,7 @@ import Sortable from '../../js/Sortable.min.js';
                     else {
                         self.state.dragTarget.data.push({ name: newItem });
                     }
-                    self.emptyUL2(self.dragTarget);
+                    self.emptyUL2(self.refs.dragTarget);
                     var temp = self.state.dragTarget.data;
                     self.state.dragTarget.data = [];
                     self.update();
