@@ -3,7 +3,7 @@ import RiotControl from 'riotcontrol';
 <aspnet-roles>
     <ul class="collapsible collection with-header">
         <li class="collection-header"><h4>AspNet Roles</h4></li>
-        <li each="{roles }">
+        <li each="{roles}">
             <div class="collapsible-header"><i class="material-icons">mode_edit</i>{ Name }</div>
             <div class="collapsible-body">
                 <p>
@@ -20,25 +20,25 @@ import RiotControl from 'riotcontrol';
 
             <form  class="col s12">
 
-            <div class="row">
-                <div class="input-field col s0">
-                    <a id="addRoleButton"
-                       disabled={ !isRoleAddable }
-                       onclick={onAddRole}
-                       class="btn-floating btn-medium waves-effect waves-light "><i class="material-icons">add</i></a>
+                <div class="row">
+                    <div class="input-field col s0">
+                        <a id="addRoleButton"
+                           disabled={ !isRoleAddable }
+                           onclick={onAddRole}
+                           class="btn-floating btn-medium waves-effect waves-light "><i class="material-icons">add</i></a>
+                    </div>
+                    <div class="input-field col s10">
+                        <input
+                                type="text" class="validate"
+                                oninput = { onRoleChange }
+                                onchange = { onRoleChange }
+                                onkeypress = { onKeyPress }
+                                name='r' >
+                        <label>Add a new role.</label>
+                    </div>
                 </div>
-                <div class="input-field col s10">
-                    <input
-                            type="text" class="validate"
-                             oninput = { onRoleChange }
-                             onchange = { onRoleChange }
-                             onkeypress = { onKeyPress }
-                             name='r' >
-                    <label>Add a new role.</label>
-                </div>
-            </div>
 
-        </form>
+            </form>
 
         </li>
     </ul>
@@ -46,7 +46,7 @@ import RiotControl from 'riotcontrol';
 
     <script>
         var self = this;
-        self.roles = ["Should","Never","See","This"]
+        self.roles = []
         self.isRoleAddable = false;
         self.lastRole = null;
 

@@ -84,7 +84,9 @@ import RiotControl from 'riotcontrol';
     <div if={hasDeveloperRole}>
         <h5>Identity Server Settings</h5>
         <div if={!isUserEnrolledInIdentityServer}>
-            <a class="waves-effect waves-light btn">Enroll</a>
+            <a id="enrollButton"
+               onclick={onEnrollUser}
+               class="waves-effect waves-light btn">Enroll</a>
         </div>
     </div>
 
@@ -131,21 +133,21 @@ import RiotControl from 'riotcontrol';
 
 
 
-<style scoped>
+    <style scoped>
 
-    .role-edit{
-        margin: 10px;
-    }
-    #aside {
-             width:350px;
-         }
+        .role-edit{
+            margin: 10px;
+        }
+        #aside {
+            width:350px;
+        }
 
-    .dropdown-content {
-        min-width: 200px; /* Changed this to accomodate content width */
+        .dropdown-content {
+            min-width: 200px; /* Changed this to accomodate content width */
 
-    }
+        }
 
-</style>
+    </style>
     <script>
         var self = this;
 
@@ -228,6 +230,18 @@ import RiotControl from 'riotcontrol';
             console.log(self.isUserEnrolledInIdentityServer)
         }
 
+        self.onEnrollUser = () => {
+            if(self.isUserEnrolledInIdentityServer == false){
+                console.log('onEnrollUser',self.lastScope)
+                RiotControl.trigger('identityserver-admin-users-create',{
+                    userId:self.result.User.Id
+                });
+            }
+        }
+        self.onEnrollUserAck =  function(data) {
+            console.log('identityserver-admin-users-create-ack',data)
+            RiotControl.trigger('identityserver-admin-users-get', { userId: self.result.User.Id });
+        }
         self.onRoleRemoveConfirmation = (e) =>{
 
             console.log(e)
@@ -240,6 +254,7 @@ import RiotControl from 'riotcontrol';
                     { userId: self.result.User.Id,name: e.target.dataset.message});
             self.collapseAll();
         }
+
         self.onAddScope = (e) =>{
             console.log(e)
             console.log('onAddScope',e.target.value)
@@ -267,12 +282,12 @@ import RiotControl from 'riotcontrol';
             if(self.scopes && self.userScopes){
                 self.availableScopes = self.scopes.filter(
                                 (item)=>{
-                                var result = self.userScopes.filter(function( name ) {
-                                    return name == item.Name;
-                                });
+                            var result = self.userScopes.filter(function( name ) {
+                                return name == item.Name;
+                            });
 
-                    return result.length == 0;
-                });
+                return result.length == 0;
+            });
                 self.is_add_scope_allowed = self.availableScopes.length > 0;
 
                 self.update();
@@ -289,13 +304,13 @@ import RiotControl from 'riotcontrol';
             self.is_add_role_allowed = false;
             if(self.result && self.systemRoles){
                 self.availableRoles = self.systemRoles.filter(
-                        (item)=>{
+                                (item)=>{
                             var result = self.result.Roles.filter(function( name ) {
                                 return name == item.Name;
                             });
 
-                            return result.length == 0;
-                        });
+                return result.length == 0;
+            });
                 self.is_add_role_allowed = self.availableRoles.length > 0;
 
                 self.update();
@@ -364,14 +379,7 @@ import RiotControl from 'riotcontrol';
             {evt:'identityserver-admin-scopes-users-get-result', handler:self.onIdentityServerScopesUsersGetResult},
             {evt:'identityserver-admin-scopes-get-result', handler:self.onScopesResult},
             {evt:'identityserver-admin-scopes-users-get-result', handler:self.onUserScopeResult},
-
+            {evt:'identityserver-admin-users-create-ack', handler:self.onEnrollUserAck},
         ]
     </script>
 </aspnet-user-detail>
-
-
-
-
-
-
-
