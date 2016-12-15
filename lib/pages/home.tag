@@ -12,7 +12,7 @@ import Sortable from '../js/Sortable.min.js';
 
 
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input
+          <input ref = "searchInput"
                     oninput={ search }
                     onchange={ search }
                     name='s'
@@ -104,7 +104,7 @@ import Sortable from '../js/Sortable.min.js';
     });
 
     self.on('mount', function() {
-      var self = this;
+
       RiotControl.on('movies_changed', self.onMoviesChanged);
       RiotControl.on('movie_cache_result', self.onMovieCacheResult);
       RiotControl.trigger('localstorage_get',{key:'moviesCache',trigger:'movie_cache_result'});
@@ -114,7 +114,7 @@ import Sortable from '../js/Sortable.min.js';
      * Search callback
      */
     self.search = function(e) {
-      var searchTerm = this.s.value
+      var searchTerm = self.refs.searchInput.value
 
       if (searchTerm === undefined || !searchTerm) {
         self.resetData()

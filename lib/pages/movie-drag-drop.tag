@@ -10,6 +10,7 @@ import Sortable from '../js/Sortable.min.js';
           </span>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input
+                        ref = "searchInput"
                         oninput={ search }
                         onchange={ search }
                         name='s'
@@ -153,7 +154,7 @@ import Sortable from '../js/Sortable.min.js';
          * Search callback
          */
         self.search = function(e) {
-            var searchTerm = this.s.value
+            var searchTerm = self.refs.searchInput.value
 
             if (searchTerm === undefined || !searchTerm) {
                 this.resetData()

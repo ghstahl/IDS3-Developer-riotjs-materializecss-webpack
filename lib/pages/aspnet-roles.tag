@@ -29,11 +29,12 @@ import RiotControl from 'riotcontrol';
                     </div>
                     <div class="input-field col s10">
                         <input
+                                ref = "r"
                                 type="text" class="validate"
                                 oninput = { onRoleChange }
                                 onchange = { onRoleChange }
                                 onkeypress = { onKeyPress }
-                                name='r' >
+                                >
                         <label>Add a new role.</label>
                     </div>
                 </div>
@@ -97,7 +98,7 @@ import RiotControl from 'riotcontrol';
                     role:self.lastRole
                 });
                 self.lastRole = "";
-                self.r.value  = self.lastRole;
+                self.refs.r.value  = self.lastRole;
                 self.calcOnRoleAddable();
             }
         }
@@ -111,8 +112,8 @@ import RiotControl from 'riotcontrol';
             }
         }
         self.onRoleChange = function(e) {
-            console.log('onRoleChange',self.r,self.r.value);
-            var roleTerm = self.r.value
+            console.log('onRoleChange',self.refs.r,self.refs.r.value);
+            var roleTerm = self.refs.r.value
             self.lastRole = roleTerm
 
             self.calcOnRoleAddable();

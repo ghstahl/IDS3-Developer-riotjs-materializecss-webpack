@@ -29,7 +29,7 @@ import RiotControl from 'riotcontrol';
                                  oninput = { onScopeInputChange }
                                  onchange = { onScopeInputChange }
                                  onkeypress = { onKeyPress }
-                                 name='r' >
+                                 ref='r' >
                         <label>Add a new Scope.</label>
                     </div>
                 </div>
@@ -90,7 +90,7 @@ import RiotControl from 'riotcontrol';
                     enabled:true
                 });
                 self.lastScope = "";
-                self.r.value  = self.lastScope;
+                self.refs.r.value  = self.lastScope;
                 self.calcOnScopeAddable();
             }
         }
@@ -105,8 +105,8 @@ import RiotControl from 'riotcontrol';
             }
         }
         self.onScopeInputChange = (e) =>{
-            console.log('onScopeInputChange',self.r,self.r.value);
-            var roleTerm = self.r.value
+            console.log('onScopeInputChange',self.refs.r,self.refs.r.value);
+            var roleTerm = self.refs.r.value
             self.lastScope = roleTerm
 
             self.calcOnScopeAddable();
